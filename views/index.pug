@@ -1,0 +1,14 @@
+extends layout.pug
+
+block content
+    .container
+        h1 Youtube Audio Visualizer
+        .row.mt-5
+            .col-8.offset-2
+                div.input-group.mb-3
+                    input(type='text' placeholder='Search' aria-label='Search' aria-describedby='basic-addon2')#search-text.form-control
+                    div.input-group-append
+                        button(type='button')#search-btn.btn-outline-primary.btn Search
+        #results-row.row
+    script(src='/resources/js/index.js')
+    
