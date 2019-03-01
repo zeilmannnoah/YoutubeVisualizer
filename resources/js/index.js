@@ -4,6 +4,10 @@ $(document).ready(function() {
         resultsRow = $('#results-row');
 
     searchBtn.click(function(e) {
+        resultsRow.children().each(function(idx, child) {
+            $(child).remove();
+        });
+
         fetch('/searchVideo?video=' + searchText.val())
             .then(function(res) {
                 return res.json()
