@@ -28,11 +28,18 @@ $(document).ready(function() {
                     cardContainer.append(card);
 
                     cardButton.click(function(e) {
-                        window.location.href = '/playAudio?videoId=' + video.videoId;
+                        window.location.href = '/visualizer?videoId=' + video.videoId;
                     });
 
                     resultsRow.append(cardContainer);
                 });
             });
     });
+
+    searchText.keydown(function(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();;
+            searchBtn.click();
+        }
+    })
 });

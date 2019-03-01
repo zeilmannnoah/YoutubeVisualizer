@@ -4,6 +4,7 @@ const API_KEY = process.env.GOOGLE_API_KEY;
 
 let searchOpts = {
         maxResults: 10,
+        type: 'video',
         key: API_KEY
     };
 

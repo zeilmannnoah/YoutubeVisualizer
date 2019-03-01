@@ -1,0 +1,12 @@
+extends layout.pug
+
+block content
+    - let videoId = locals.videoId;
+    .container
+        h1 Visualize
+        audio(controls).d-none
+            source(src="/visualizer/playAudio?videoId=" + videoId)
+        .row
+            .col-12
+                p#data
+    script(src='/resources/js/visualizer.js')
