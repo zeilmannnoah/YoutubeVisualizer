@@ -1,3 +1,80 @@
 #data {
     word-wrap: break-word;
 }
+
+#side-panel {
+    position: absolute;
+    min-width: 15%;
+    z-index: 1;
+    top: 0;
+    min-height: 99%;
+    background: rgba(0, 0, 0, 0.8);
+    transition: right 1s;
+}
+
+#side-panel > div::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -7px;
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+    cursor:pointer;
+}
+
+#side-panel > .row {
+    color: white;
+    margin-left: 5px;
+    margin-right: 15px;
+}
+
+.no-scroll {
+    overflow: hidden
+}
+
+.open-panel {
+    right: 0%;
+}
+
+.close-panel {
+    right: -13%;
+}
+
+.slider-container {
+    width: 100%;
+  }
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #5a5a5a;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+    -webkit-transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: white;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: white;
+    cursor: pointer;
+}
