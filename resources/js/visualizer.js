@@ -1,6 +1,6 @@
 $(document).ready(function() {
     const animations = {
-        bar: function(data, canvas) {
+        bar: function(data) {
             canvas.prop('width', window.innerWidth)
             canvas.prop('height', window.innerHeight)
 
@@ -8,7 +8,6 @@ $(document).ready(function() {
                 width = canvas.prop('width'),
                 centerX = width / 2,
                 centerY = height /2,
-                canvasContext = canvas.get(0).getContext('2d'),
                 radius = 150,
                 bars = 200,
                 barWidth = 2,
@@ -52,10 +51,35 @@ $(document).ready(function() {
     let sideBtn = $('#side-btn'),
         sidePanel = $('#side-panel'),
         volumeControl = $('#volume-control'),
-        audio = $('audio');
+        audio = $('audio'),
+        audioContext = new (AudioContext || webkitAudioContext)(),
+        canvas = $('#display'),
+        canvasContext = canvas.get(0).getContext('2d');
+        intialGradient = canvasContext.createLinearGradient(0, 0, 0, canvas.prop('height'));
+
+    if (audioContext.state === 'suspended') {
+        let playButton = $('<button class="play-button btn btn-primary">Play</button>');
+
+        playButton.click(function(e) {
+            audioContext.resume();
+            playButton.addClass('d-none');
+            playAudio();
+        });
+
+        $('body').append(playButton);
+    }
+    else {
+        playAudio();
+    }
 
     $('body').prop('scroll', "no");
     $('body').addClass('no-scroll');
+    canvas.prop('width', window.innerWidth);
+    canvas.prop('height', window.innerHeight);
+    intialGradient.addColorStop(0, "rgba(0, 0, 77, 1)");
+    intialGradient.addColorStop(1, "rgba(0, 0, 51, 1)");
+    canvasContext.fillStyle = intialGradient;
+    canvasContext.fillRect(0, 0, canvas.prop('width'), canvas.prop('height'));
 
     sideBtn.click(function(e) {
         let opened = sidePanel.hasClass('open-panel');
@@ -67,31 +91,32 @@ $(document).ready(function() {
         audio.prop('volume', e.target.value * 0.01);
     });
 
-    try {
-        let audioContext = new AudioContext(),
-            source = audioContext.createMediaElementSource(audio.get(0)),
-            analyser = audioContext.createAnalyser(),
-            display = $('#display'),
-            frequencyData;
-
-        source.connect(audioContext.destination);
-        source.connect(analyser);
-        audio.prop('volume', .5);
-        frequencyData = new Uint8Array(analyser.frequencyBinCount);
-        
-        audio.trigger('play');
-        renderFrame();
-
-        function renderFrame() {
-            if (!audio.prop('paused')) {
-                requestAnimationFrame(renderFrame);
+    
+    function playAudio() {
+        try {
+            let source = audioContext.createMediaElementSource(audio.get(0)),
+                analyser = audioContext.createAnalyser(),
+                frequencyData;
+    
+            source.connect(audioContext.destination);
+            source.connect(analyser);
+            audio.prop('volume', .5);
+            frequencyData = new Uint8Array(analyser.frequencyBinCount);
+            
+            audio.trigger('play');
+            renderFrame();
+    
+            function renderFrame() {
+                if (!audio.prop('paused')) {
+                    requestAnimationFrame(renderFrame);
+                }
+                analyser.getByteFrequencyData(frequencyData);
+    
+                animations['bar'](frequencyData, display);
             }
-            analyser.getByteFrequencyData(frequencyData);
-
-            animations['bar'](frequencyData, display);
         }
-    }
-    catch (err) {
-        console.log(err);
+        catch (err) {
+            console.log(err);
+        }
     }
 });

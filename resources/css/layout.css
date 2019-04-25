@@ -30,6 +30,14 @@
     margin-right: 15px;
 }
 
+.play-button {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    text-align: center;
+    z-index: 1;
+}
+
 .no-scroll {
     overflow: hidden
 }
@@ -39,7 +47,7 @@
 }
 
 .close-panel {
-    right: -13%;
+    right: -14%;
 }
 
 .slider-container {
