@@ -1,6 +1,6 @@
 $(document).ready(function() {
     const animations = {
-        bar: function(data) {
+        "Circle Bar": function(data) {
             canvas.prop('width', window.innerWidth)
             canvas.prop('height', window.innerHeight)
 
@@ -27,9 +27,8 @@ $(document).ready(function() {
                 canvasContext.stroke();
             }
 
-
-            for (let i = 0; i < bars; i++) {
-                let radians = Math.PI * 2 / (bars - 60),
+            for (let i = 0; i < bars - 90; i++) {
+                let radians = Math.PI * 2 / (bars - 90),
                     barHeight = data[i] * 0.7,
                     xStart = centerX + Math.cos(radians * i) * radius,
                     yStart = centerY + Math.sin(radians * i) * radius,
@@ -47,16 +46,31 @@ $(document).ready(function() {
             }
         }
     };
-
     let sideBtn = $('#side-btn'),
         sidePanel = $('#side-panel'),
+        rightArrow = $('#right-arrow'),
+        leftArrow = $('#left-arrow'),
+        currentFunc = $('.current-function'),
         volumeControl = $('#volume-control'),
         audio = $('audio'),
-        audioContext = new (AudioContext || webkitAudioContext)(),
         canvas = $('#display'),
+        audioContext = new (AudioContext || webkitAudioContext)(),
         canvasContext = canvas.get(0).getContext('2d');
-        intialGradient = canvasContext.createLinearGradient(0, 0, 0, canvas.prop('height'));
+        intialGradient = canvasContext.createLinearGradient(0, 0, 0, canvas.prop('height')),
+        animationFuncs = Object.keys(animations);
+        currentIdx = 0;
 
+    $('body').prop('scroll', "no");
+    $('body').addClass('no-scroll');
+    canvas.prop('width', window.innerWidth);
+    canvas.prop('height', window.innerHeight);
+    intialGradient.addColorStop(0, "rgba(0, 0, 77, 1)");
+    intialGradient.addColorStop(1, "rgba(0, 0, 51, 1)");
+    canvasContext.fillStyle = intialGradient;
+    canvasContext.fillRect(0, 0, canvas.prop('width'), canvas.prop('height'));
+    currentFunc.text(animationFuncs[currentIdx]);
+
+    // Handles playing audio on fresh load
     if (audioContext.state === 'suspended') {
         let playButton = $('<button class="play-button btn btn-primary">Play</button>');
 
@@ -72,17 +86,9 @@ $(document).ready(function() {
         playAudio();
     }
 
-    $('body').prop('scroll', "no");
-    $('body').addClass('no-scroll');
-    canvas.prop('width', window.innerWidth);
-    canvas.prop('height', window.innerHeight);
-    intialGradient.addColorStop(0, "rgba(0, 0, 77, 1)");
-    intialGradient.addColorStop(1, "rgba(0, 0, 51, 1)");
-    canvasContext.fillStyle = intialGradient;
-    canvasContext.fillRect(0, 0, canvas.prop('width'), canvas.prop('height'));
-
     sideBtn.click(function(e) {
         let opened = sidePanel.hasClass('open-panel');
+
         sidePanel.removeClass(opened ? 'open-panel' : 'close-panel');
         sidePanel.addClass(opened ? 'close-panel' : 'open-panel');
     });
@@ -91,6 +97,31 @@ $(document).ready(function() {
         audio.prop('volume', e.target.value * 0.01);
     });
 
+    rightArrow.click(function(e) {
+        let newFunc = animationFuncs[++currentIdx];
+
+        if (!newFunc) {
+            currentIdx = 0;
+            newFunc = animationFuncs[currentIdx]; 
+        }
+
+        currentFunc.text(newFunc);
+    });
+
+    leftArrow.click(function(e) {
+        let newFunc = animationFuncs[--currentIdx];
+
+        if (!newFunc) {
+            currentIdx = animationFuncs.length - 1;
+            newFunc = animationFuncs[currentIdx]; 
+        }
+
+        currentFunc.text(newFunc);
+    });
+
+    audio.on('ended', function(e) {
+        animations[currentFunc.text()]([]);
+    })
     
     function playAudio() {
         try {
@@ -110,13 +141,13 @@ $(document).ready(function() {
                 if (!audio.prop('paused')) {
                     requestAnimationFrame(renderFrame);
                 }
+
                 analyser.getByteFrequencyData(frequencyData);
-    
-                animations['bar'](frequencyData, display);
+                animations[currentFunc.text()](frequencyData);
             }
         }
         catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 });

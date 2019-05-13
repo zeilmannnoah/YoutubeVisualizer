@@ -86,3 +86,12 @@
     background: white;
     cursor: pointer;
 }
+
+.arrow {
+    max-width: 50px;
+    filter: invert(0.7);
+}
+
+.arrow:hover {
+    filter: invert(1) !important;
+}

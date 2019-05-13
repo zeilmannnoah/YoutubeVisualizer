@@ -37,6 +37,9 @@ $(document).ready(function() {
 
                     resultsRow.append(cardContainer);
                 });
+            })
+            .catch(function(err) {
+                console.log(err);
             });
     });
 

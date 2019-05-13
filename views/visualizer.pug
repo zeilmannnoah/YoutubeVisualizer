@@ -13,5 +13,14 @@ block content
                         label Volume
                         .slider-container
                             input(type='range' min='0' max='100' value='50')#volume-control.slider
+                        label.mt-5 Visualizer
+                        .visualize-select-container
+                            .row
+                                .col-3
+                                    img(src='/resources/imgs/left-arrow.png')#left-arrow.arrow
+                                .col-6.mt-3.text-center
+                                    .current-function
+                                .col-3
+                                    img(src='/resources/imgs/right-arrow.png')#right-arrow.arrow                  
                 #side-btn
     script(src='/resources/js/visualizer.js')
