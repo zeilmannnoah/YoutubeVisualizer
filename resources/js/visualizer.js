@@ -44,7 +44,182 @@ $(document).ready(function() {
                 canvasContext.lineTo(xEnd, yEnd);
                 canvasContext.stroke();
             }
-        }
+        },
+        "doublewave": function(data){
+            canvas.prop('width', window.innerWidth)
+            canvas.prop('height', window.innerHeight)
+
+            let startX = 1,
+                startY = canvas.prop('height'),
+                height = canvas.prop('height'),
+                gradient = canvasContext.createLinearGradient(0,0,0,height), nb
+                bars = 100,
+                greatest = 0;
+                canvasContext = canvas.get(0).getContext('2d'),
+                division = canvas.prop('width')/100;
+            
+                gradient.addColorStop(0, "rgba(107, 39, 139, 1)");
+                gradient.addColorStop(1, "rgba(50, 155, 190, 1)");
+                canvasContext.fillStyle = gradient;
+                canvasContext.fillRect(0, 0, canvas.prop('width'), canvas.prop('height'));
+                canvasContext.beginPath();
+                canvasContext.stroke();
+            
+            
+            for (let i = 0; i < bars; i++) {
+                    let xStart = startX + (division*i),
+                    yStart = startY,
+                    xEnd = xStart,
+                    yEnd = yStart - data[i]*1.5,
+                    lineLength = yEnd-yStart,
+                    barWidth = 3,
+                    lineColor = 'rgb(' + data[i] + ', ' + data[i]+80 + ', ' + 150 + ')';
+                    if(lineLength<greatest){
+                        greatest = lineLength;
+                    }
+                    
+                    canvasContext.strokeStyle = lineColor;
+                    canvasContext.lineWidth = barWidth;
+                    canvasContext.beginPath();
+                    canvasContext.moveTo(xStart, yStart+lineLength/2);
+                    canvasContext.lineTo(xEnd, yEnd+lineLength/2);
+                    canvasContext.stroke();
+            }
+            for (let i = 100; i < bars+100; i++) {
+                    if(i==100){
+                        console.log(greatest);
+                    }
+                    
+                    let xStart = startX + (division*(i-100)),
+                    yStart = startY+(greatest),
+                    xEnd = xStart,
+                    yEnd = yStart - data[i]*1.5,
+                    lineLength = yEnd-yStart,
+                    barWidth = 3,
+                    lineColor = 'rgb(' + data[i] + ', ' + data[i]+120 + ', ' + 200 + ')';
+                    
+                    
+                    canvasContext.strokeStyle = lineColor;
+                    canvasContext.lineWidth = barWidth;
+                    canvasContext.beginPath();
+                    canvasContext.moveTo(xStart, yStart+lineLength-30);
+                    canvasContext.lineTo(xEnd, yEnd+lineLength-30);
+                    canvasContext.stroke();
+            }
+        },
+        "polygon": function(data){
+            canvas.prop('width', window.innerWidth)
+            canvas.prop('height', window.innerHeight)
+
+            let startX = 1,
+                startY = canvas.prop('height'),
+                height = canvas.prop('height'),
+                bars = 200,
+                canvasContext = canvas.get(0).getContext('2d'),
+                division = canvas.prop('width')/bars,
+                barWidth=2,
+                gradient = canvasContext.createLinearGradient(0,0,0,height);
+
+            let xStart = startX;
+            let yStart = startY/2;
+            let topXStart = 0;
+            let topYStart = 0;
+            let bottomXStart = 0;
+            let bottomYStart = 0;
+            let topXEnd = 0;
+            let topYEnd = 0;
+            let bottomXEnd = 0;
+            let bottomYEnd = 0;
+            let drawTop = false;
+            let drawBottom = false;
+
+
+            gradient.addColorStop(0, "rgba(107, 39, 139, 1)");
+                gradient.addColorStop(1, "rgba(50, 155, 190, 1)");
+                canvasContext.fillStyle = gradient;
+                canvasContext.fillRect(0, 0, canvas.prop('width'), canvas.prop('height'));
+                canvasContext.beginPath();
+                canvasContext.stroke();
+
+            for(let i=0;i<bars+5;i++){
+                    if(i%2==0 && i%4!=0 && i!=0){
+                        let xEnd = startX + (division*i),
+                        yEnd = yStart - (data[i] + 20),
+                        lineColor = 'rgb(' + data[i] + ', ' + data[i]+50 + ', ' + 205 + ')';
+                        if(yEnd < 0) yEnd=0;
+                        if(yEnd > height) yEnd=height;
+                        if(xEnd>canvas.prop('width')){
+                            xEnd = canvas.prop('width');
+                        }
+                        if(drawTop==false){
+                            bottomXStart = xStart;
+                            bottomYStart = yStart;
+                        }
+                        if(drawTop==true){
+                            topXEnd = xEnd;
+                            topYEnd = yEnd;
+                            canvasContext.strokeStyle = lineColor;
+                            canvasContext.lineWidth = barWidth;
+                            canvasContext.beginPath();
+                            canvasContext.moveTo(topXStart, topYStart);
+                            canvasContext.lineTo(topXEnd, topYEnd);
+                            canvasContext.stroke();
+                        }
+                        
+                        if(drawBottom==false){
+                            topXStart = xEnd;
+                            topYStart = yEnd;
+                        }
+                        
+                        canvasContext.strokeStyle = lineColor;
+                        canvasContext.lineWidth = barWidth;
+                        canvasContext.beginPath();
+                        canvasContext.moveTo(xStart, yStart);
+                        canvasContext.lineTo(xEnd, yEnd);
+                        canvasContext.stroke();
+                        //yStart = yEnd;
+                        xStart = xEnd;
+                        
+                        topXStart = xEnd;
+                        topYStart = yEnd;
+                        
+                        
+                        drawTop = true;
+                       }else if(i%4==0 && i!=0){
+                        let //radians = Math.PI * 2 / bars,
+                        barHeight = data[i] * 0.7,
+                        xEnd = startX + (division*i),
+                        yEnd = yStart + (data[i] + 20),
+                        lineColor = 'rgb(' + data[i]+100 + ', ' + data[i] + ', ' + 205 + ')';
+                
+                        if(yEnd < 0) yEnd=0;
+                        if(yEnd > height) yEnd=height;
+                            bottomXEnd = xEnd;
+                            bottomYEnd = yEnd;
+                            canvasContext.strokeStyle = lineColor;
+                            canvasContext.lineWidth = barWidth;
+                            canvasContext.beginPath();
+                            canvasContext.moveTo(bottomXStart, bottomYStart);
+                            canvasContext.lineTo(bottomXEnd, bottomYEnd);
+                            canvasContext.stroke();
+                        
+                        
+                        canvasContext.strokeStyle = lineColor;
+                        canvasContext.lineWidth = barWidth;
+                        canvasContext.beginPath();
+                        canvasContext.moveTo(xStart, yStart);
+                        canvasContext.lineTo(xEnd, yEnd);
+                        canvasContext.stroke();
+                        //yStart = yEnd;
+                        xStart = xEnd;
+                
+                        bottomXStart = xEnd;
+                        bottomYStart = yEnd;
+                
+                        drawBottom = true;
+                       }
+                }
+            }
     };
     let sideBtn = $('#side-btn'),
         sidePanel = $('#side-panel'),
