@@ -4,7 +4,7 @@
 
 #side-panel {
     position: absolute;
-    min-width: 15%;
+    width: 20%;
     z-index: 1;
     top: 0;
     min-height: 99%;
@@ -47,7 +47,7 @@
 }
 
 .close-panel {
-    right: -14%;
+    right: -19%;
 }
 
 .slider-container {
