@@ -45,7 +45,7 @@ $(document).ready(function() {
                 canvasContext.stroke();
             }
         },
-        "doublewave": function(data){
+        "Double Wave": function(data){
             canvas.prop('width', window.innerWidth)
             canvas.prop('height', window.innerHeight)
 
@@ -86,9 +86,6 @@ $(document).ready(function() {
                     canvasContext.stroke();
             }
             for (let i = 100; i < bars+100; i++) {
-                    if(i==100){
-                        console.log(greatest);
-                    }
                     
                     let xStart = startX + (division*(i-100)),
                     yStart = startY+(greatest),
@@ -107,7 +104,7 @@ $(document).ready(function() {
                     canvasContext.stroke();
             }
         },
-        "polygon": function(data){
+        "Polygon": function(data){
             canvas.prop('width', window.innerWidth)
             canvas.prop('height', window.innerHeight)
 
