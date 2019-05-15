@@ -216,6 +216,129 @@ $(document).ready(function() {
                         drawBottom = true;
                        }
                 }
+            },
+            "Boombox": function(data){
+                canvas.prop('width', window.innerWidth)
+                canvas.prop('height', window.innerHeight)
+    
+                let height = canvas.prop('height'),
+                    width = canvas.prop('width'),
+                    centerX = width / 2,
+                    centerY = height /2,
+                    radius = 150,
+                    bars = 200,
+                    barWidth = 2,
+                    gradient = canvasContext.createLinearGradient(0, 0, 0, height);
+    
+                //colors the background
+                for (let i = bars - 30; i < bars; i++) {
+                    gradient.addColorStop(0, "rgba(" + data[i] + ", " + data[i] + ", 77, 1)");
+                    gradient.addColorStop(1, "rgba(" + data[i] + ", " + data[i] + ", 51, 1)");
+                    canvasContext.fillStyle = gradient;
+                    canvasContext.fillRect(0, 0, width, height);
+                }
+    
+                //creates boombox
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.fillStyle = 'gray';
+                    canvasContext.beginPath();
+                    canvasContext.rect(centerX-550, centerY-250, 900,500);
+                    canvasContext.stroke();
+                    canvasContext.fill();
+                }
+    
+    
+                //left speaker
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.fillStyle = 'black';
+                    canvasContext.beginPath();
+                    canvasContext.arc(centerX-400, centerY, 125, 0, 2 * Math.PI);
+                    canvasContext.stroke();
+                    canvasContext.fill();
+                }
+    
+                //right speaker
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.fillStyle = 'black';
+                    canvasContext.beginPath();
+                    canvasContext.arc(centerX+200, centerY, 125, 0, 2 * Math.PI);
+                    canvasContext.stroke();
+                    canvasContext.fill();
+                }
+    
+                //center rectangle(tape deck)
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.strokeStyle = '#595959';
+                    canvasContext.beginPath();
+                    canvasContext.rect(centerX - 220, centerY , 250,150);
+                    canvasContext.stroke();
+                }
+    
+                //tape rectangle
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.fillStyle = 'black';
+                    canvasContext.beginPath();
+                    canvasContext.rect(centerX - 195, centerY + 25 , 200,100);
+                    canvasContext.stroke();
+                    canvasContext.fill();
+                }
+    
+                //tape circle right
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.strokeStyle = 'gray';
+                    canvasContext.beginPath();
+                    canvasContext.arc(centerX - 50 , centerY + 80 , 5, 0, 2 * Math.PI);
+                    canvasContext.stroke();
+                }
+    
+                //tape circle right
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.strokeStyle = 'gray';
+                    canvasContext.beginPath();
+                    canvasContext.arc(centerX - 135 , centerY + 80 , 5, 0, 2 * Math.PI);
+                    canvasContext.stroke();
+                }
+    
+                //handle
+                for(let i = bars - 60; i < bars; i++){
+                    canvasContext.lineWidth = 30;
+                    canvasContext.strokeStyle = 'gray';
+                    canvasContext.beginPath();
+                    canvasContext.rect(centerX - 275 , centerY - 325 , 350,200);
+                    canvasContext.stroke();
+                }
+    
+                //buttons under tape deck
+                centerX = centerX - 220;
+                for(let j = 0; j < 5; j++){
+                    for(let i = bars - 60; i < bars; i++){
+                        canvasContext.lineWidth = 1;
+                        canvasContext.strokeStyle = 'gray';
+                        canvasContext.beginPath();
+                        canvasContext.rect(centerX, centerY + 200 , 40,40);
+                        canvasContext.stroke();
+                        canvasContext.fill();
+                    }
+                    centerX = centerX + 50;
+                }
+    
+    
+                //right speaker moving circle
+                centerX = width / 2;
+                for(let i = 0; i < bars; i++){
+                    canvasContext.strokeStyle = "white";
+                    canvasContext.beginPath();
+                    canvasContext.arc(centerX + 200 , centerY, data[i] * 0.5, 0 , 2 * Math.PI);
+                    canvasContext.stroke();
+                }
+    
+                //left speaker moving circle
+                for(let i = 0; i < bars; i++){
+                    canvasContext.strokeStyle = "white";
+                    canvasContext.beginPath();
+                    canvasContext.arc(centerX - 400 , centerY, data[i] * 0.5, 0 , 2 * Math.PI);
+                    canvasContext.stroke();
+                } 
             }
     };
     let sideBtn = $('#side-btn'),
