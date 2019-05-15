@@ -44,7 +44,49 @@ $(document).ready(function() {
                 canvasContext.lineTo(xEnd, yEnd);
                 canvasContext.stroke();
             }
+        },
+
+        "Wave": function(data, canvas) {
+            canvas.prop('width', window.innerWidth)
+            canvas.prop('height', window.innerHeight)
+
+            let height = canvas.prop('height'),
+                width = canvas.prop('width'),
+                centerX = width / 2,
+                centerY = height /2,
+                canvasContext = canvas.get(0).getContext('2d'),
+                radius = 150,
+                bars = 200,
+                barWidth = 2,
+                gradient = canvasContext.createLinearGradient(0, 0, 0, height);
+
+            for (let i = bars - 30; i < bars; i++) {
+                gradient.addColorStop(0, "rgba(" + data[i]  + ", " + "50" + ", 10, 1)");
+                gradient.addColorStop(1, "rgba(" + data[i]  + ", " + "11" + ", 100, 1)");
+                canvasContext.fillStyle = gradient;
+                canvasContext.fillRect(0, 0, width, height);
+            }
+
+
+            for (let i = 0; i < bars; i++) {
+                let barHeight = data[i] * 0.7,
+                    xStart = i * width/200,
+                    yStart = centerY - barHeight,
+                    xEnd = i * width/200,
+                    yEnd = centerY + barHeight,
+                    lineColor = 'rgb(' + data[i] + ', ' + data[i] + ', ' + 205 + ')';
+
+                // Normal Pass
+                canvasContext.strokeStyle = lineColor;
+                canvasContext.lineWidth = barWidth;
+                canvasContext.beginPath();
+                canvasContext.moveTo(xStart, yStart);
+                canvasContext.lineTo(xEnd, yEnd);
+                canvasContext.stroke();
+            }
+
         }
+
     };
     let sideBtn = $('#side-btn'),
         sidePanel = $('#side-panel'),
